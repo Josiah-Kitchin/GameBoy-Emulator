@@ -24,5 +24,6 @@ std::vector<uint8_t> Utils::get_instructions(const std::string& file_name)
         bytes.push_back(byte);
     }
     file.close(); 
+    return bytes; 
 }
 
