@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_BUILD_TYPE Prod)
+set(CMAKE_BUILD_TYPE Debug)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_definitions(-DDEBUG_BUILD)
@@ -15,4 +15,4 @@ add_executable(gameboy ${SOURCES})
 
 include_directories(./include)
 
-target_compile_options(gameboy PRIVATE -Wall -Wextra -O3)
+target_compile_options(gameboy PRIVATE -Wall -Wextra -g)

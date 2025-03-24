@@ -5,9 +5,6 @@
 #include <iostream> 
 
 std::vector<uint8_t> Utils::get_instructions(const std::string& file_name)
-/* 
-    Load instructions as bytes from a file 
-*/
 {
     std::ifstream file(file_name, std::ios::binary);
     if (!file)

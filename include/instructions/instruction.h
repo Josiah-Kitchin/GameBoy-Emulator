@@ -3,22 +3,19 @@
 
 #include "cpu.h"
 
+/// @brief Abstract class of instructions
+/// Instructions modify the state of the cpu, and are decoded via the instruction factory 
+/// If the number of bytes for the instruction is beyond 1, it must be 
+/// set in the constructor to correctly update the pc 
 class Instruction
-/* 
-    Abstract class of instructions
-    Instructions modify the state of the cpu, and are decoded via the instruction factory 
-
-    If the number of bytes for the instruction is beyond 1, it must be 
-    set in the constructor to correctly update the pc 
-*/
 {
 public: 
-    // Execute function modifies the state of the cpu 
-    virtual void execute(CPU&) const = 0; 
+    /// @brief Modifies the state of the CPU to emulate a gameboy instruction
+    /// @param cpu Reference to the CPU singleton 
+    virtual void execute(CPU& cpu) const = 0; 
     virtual ~Instruction() = default; 
 
-    // Instructions can vary in bytes 
-    unsigned int num_instr_bytes = 1; 
+    unsigned int num_instr_bytes = 1;   
 };
 
 class LoadRR8 : public Instruction
@@ -30,6 +27,7 @@ public:
 private: 
     CPU::Register8 src, dst; 
 };
+
 
 
 

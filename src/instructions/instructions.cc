@@ -1,6 +1,7 @@
 
 
 #include "instructions/instruction.h"
+#include <iostream> 
 
 void LoadRR8::execute(CPU& cpu) const
 {
