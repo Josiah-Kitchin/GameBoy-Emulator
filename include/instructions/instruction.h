@@ -16,6 +16,7 @@ public:
     virtual ~Instruction() = default; 
 
     unsigned int num_instr_bytes = 1;   
+    unsigned int num_cycles = 1; 
 };
 
 class LoadRR8 : public Instruction

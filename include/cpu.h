@@ -22,29 +22,14 @@ public:
     /// @param instruction Base class instruction pointer
     void execute(const std::unique_ptr<Instruction>& instruction);
 
-    struct Flags
-    {
-    public:     
-        void set_zero(uint8_t bit) { m_zero = bit };
-        void set_subtract(uint8_t bit) { m_subtract = bit }; 
-        void set_half_carry(uint8_t bit) { m_half_carry = bit }; 
-        void set_carry(uint8_t bit) { m_carry = bit }; 
-        uint8_t get_zero() { return m_zero }; 
-        uint8_t get_subtract() { return m_subtract }; 
-        uint8_t get_half_carry() { return m_half_carry }; 
-        uint8_t get_carry() { return m_carry }; 
-
-    private: 
-        uint8_t m_zero; 
-        uint8_t m_subtract; 
-        uint8_t m_half_carry; 
-        uint8_t m_carry; 
-    };
-
-    Flags flags; 
 
     enum class Register8 { A, B, C, D, E, F, H, L };
     enum class Register16 { AF, BC, DE, HL };
+
+    void set_zero(uint8_t bit);
+    void set_subtract(uint8_t bit); 
+    void set_half_carry(uint8_t bit); 
+    void set_carry(uint8_t bit); 
 
     void set_register8(Register8 reg, uint8_t value);
     void set_register16(Register16 reg, uint16_t value);
@@ -54,6 +39,6 @@ public:
     
 private: 
     // registers
-    uint8_t m_a, m_b, m_c, m_d, m_e, m_f, m_h, m_l; 
-    uint8_t m_sp, m_pc; 
+    uint8_t m_a = 0, m_b = 0, m_c = 0, m_d = 0, m_e = 0, m_f = 0, m_h = 0, m_l = 0; 
+    uint8_t m_sp = 0, m_pc = 0; 
 };

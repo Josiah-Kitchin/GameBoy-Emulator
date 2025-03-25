@@ -3,6 +3,7 @@
 #include "cpu.h"
 #include "instructions/instruction.h"
 #include "instructions/instruction_factory.h"
+#include "clock.h"
 
 const std::unique_ptr<Instruction> CPU::fetch_and_decode(const std::vector<uint8_t>& instr_bytes)
 {
@@ -16,6 +17,45 @@ const std::unique_ptr<Instruction> CPU::fetch_and_decode(const std::vector<uint8
 void CPU::execute(const std::unique_ptr<Instruction>& instruction)
 {
     instruction->execute(*this);
+    Clock::wait_for_cycles(instruction->num_cycles);
+}
+
+
+
+
+
+// Flags are the lower 4 bits of the F register
+
+void CPU::set_zero(uint8_t bit)
+{
+    if (bit)
+        m_f |= 0b1;
+    else   
+        m_f &= 0b1111110;
+}
+
+void CPU::set_subtract(uint8_t bit)
+{
+    if (bit)
+        m_f |= 0b10;
+    else   
+        m_f &= 0b1111101;
+}
+
+void CPU::set_half_carry(uint8_t bit)
+{
+    if (bit)
+        m_f |= 0b100;
+    else   
+        m_f &= 0b1111011;
+}
+
+void CPU::set_carry(uint8_t bit)
+{
+    if (bit)
+        m_f |= 0b1000;
+    else   
+        m_f &= 0b1110111;
 }
 
 
@@ -49,7 +89,7 @@ uint16_t CPU::get_register16(Register16 reg)
     {
         case (Register16::AF): 
             reg1 = m_a;
-            reg2 = m_b;
+            reg2 = m_f;
             break; 
         case (Register16::BC): 
             reg1 = m_b;
@@ -101,7 +141,7 @@ void CPU::set_register8(Register8 reg, uint8_t value)
 void CPU::set_register16(Register16 reg, uint16_t value)
 {
     uint8_t reg1_value = value >> 8; 
-    uint8_t reg2_value = value & 0xF; 
+    uint8_t reg2_value = value & 0xFF; 
 
     switch (reg)
     {

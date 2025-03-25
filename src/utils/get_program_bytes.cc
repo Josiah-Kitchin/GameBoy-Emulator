@@ -1,10 +1,10 @@
 
-#include "utils/get_instructions.h"
+#include "utils.h"
 
 #include <fstream> 
 #include <iostream> 
 
-std::vector<uint8_t> Utils::get_instructions(const std::string& file_name)
+std::vector<uint8_t> Utils::get_program_bytes(const std::string& file_name)
 {
     std::ifstream file(file_name, std::ios::binary);
     if (!file)
