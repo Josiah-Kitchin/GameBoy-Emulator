@@ -2,6 +2,7 @@
 #include "utils.h"
 #include "cpu.h"
 #include "clock.h"
+#include "bus.h"
 #include <iostream> 
 
 void usage(int argc)
@@ -15,8 +16,11 @@ void usage(int argc)
 
 int main(int argc, char** argv)
 {
+    Bus bus; 
     std::vector<uint8_t> program { 0x06, 7, 0x78 };
-    CPU cpu(program); 
+    bus.memory.load(program);
+
+    CPU cpu(bus); 
 
     for (int i = 0; i < 2; i++)
     {

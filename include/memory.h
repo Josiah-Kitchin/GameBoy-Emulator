@@ -7,9 +7,10 @@
 /// @brief Stores all forms of memory
 class Memory
 {
-    Memory();
-    uint8_t read(uint16_t address);
+  public: 
+    uint8_t read(uint16_t address) const;
     void write(uint16_t address, uint8_t byte);
+    void load(const std::vector<uint8_t>& bytes);
 
     uint16_t rom_bank00_start = 0x0000; 
     uint16_t rom_bank01_start = 0x4000; 

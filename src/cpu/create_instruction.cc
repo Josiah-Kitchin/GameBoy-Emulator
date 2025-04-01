@@ -101,7 +101,7 @@ const std::unique_ptr<Instruction> CPU::create_instruction(uint8_t opcode)
     }
     auto& instr_creator = it->second; 
     std::unique_ptr<Instruction> instr = instr_creator(); 
-    instr->fetch_data(m_pc, memory);
+    instr->fetch_data(m_pc, bus.memory);
 
     return instr; 
 }

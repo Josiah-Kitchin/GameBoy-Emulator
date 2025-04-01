@@ -3,11 +3,12 @@
 #include "cpu.h"
 #include "instruction.h"
 #include "clock.h"
+#include <cassert> 
 
 
 const std::unique_ptr<Instruction> CPU::fetch_and_decode()
 {
-    uint8_t opcode = memory[m_pc];
+    uint8_t opcode = bus.memory.read(m_pc);
     std::unique_ptr<Instruction> instr = create_instruction(opcode);
     m_pc += instr->get_num_bytes(); 
     return instr; 
@@ -74,6 +75,8 @@ uint8_t CPU::get_register(Register8 reg)
             return m_h; 
         case (Register8::L): 
             return m_l; 
+        default: 
+            assert(false);
     }
 }
 
@@ -98,6 +101,8 @@ uint16_t CPU::get_register(Register16 reg)
             reg1 = m_h;
             reg2 = m_l;
             break; 
+        default: 
+            assert(false);
     }
     return (reg1 << 8) | reg2; 
 }
@@ -130,6 +135,8 @@ void CPU::set_register(Register8 reg, uint8_t value)
         case (Register8::L): 
             m_l = value;
             break; 
+        default: 
+            assert(false);
     }
 }
 
@@ -156,5 +163,7 @@ void CPU::set_register(Register16 reg, uint16_t value)
             m_h = reg1_value;
             m_l = reg2_value;
             break; 
+        default: 
+            assert(false);
     }
 }

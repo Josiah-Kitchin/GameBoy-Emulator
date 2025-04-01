@@ -1,6 +1,7 @@
 
 #pragma once
 #include "registers.h"
+#include "memory.h"
 
 class CPU;
 
@@ -16,21 +17,23 @@ class Instruction
     virtual ~Instruction() = default;
     Instruction(uint8_t num_bytes, uint8_t clock_cycles);
 
-    /// @brief Fetches data needed by instruction from memory
+    /// @brief Fetch byte n or bytes nn if the instruction is a multybyte instruction
     /// @param pc program counter of the cpu 
     /// @param memory memory used by the cpu 
-    void fetch_data(uint8_t pc, const std::vector<uint8_t>& memory);
+    void fetch_data(uint8_t pc, const Memory& memory);
 
     uint8_t get_num_bytes() const { return m_num_bytes; }
     uint8_t get_clock_cycles() const { return m_clock_cycles; }
 
   protected: 
+    // Set by fetch_data method 
     uint8_t n = 0;
     uint16_t nn = 0;
 
   private:
-    uint8_t m_num_bytes = 0;  
-    uint8_t m_clock_cycles = 0;
+    // Initialized by each derived class 
+    const uint8_t m_num_bytes = 0;  
+    const uint8_t m_clock_cycles = 0;
 
 };
 

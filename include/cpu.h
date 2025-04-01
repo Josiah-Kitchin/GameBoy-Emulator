@@ -7,6 +7,7 @@
 #include <memory> 
 #include "instruction.h"
 #include "registers.h"
+#include "bus.h"
 
 
 /// @brief Responsible for fetching, decoding, and executing instructions. 
@@ -14,7 +15,7 @@
 class CPU 
 {
 public: 
-    CPU(std::vector<uint8_t>& memory) : memory(memory) {}
+    CPU(Bus& bus) : bus(bus) {}
 
     /// @brief Fetches instruction from memory and updates program counter 
     /// @param bytes 
@@ -39,7 +40,7 @@ public:
     uint8_t get_pc() { return m_pc; }
     uint8_t get_sp() { return m_sp; }
 
-    std::vector<uint8_t>& memory; 
+    Bus& bus;  // Connection to other components of the gameboy
     
 private: 
     /// @brief Returns a pointer to an instruction based on the opcode 
