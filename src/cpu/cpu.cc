@@ -1,28 +1,23 @@
 
 
 #include "cpu.h"
-#include "instructions/instruction.h"
-#include "instructions/instruction_factory.h"
+#include "instruction.h"
 #include "clock.h"
 
-const std::unique_ptr<Instruction> CPU::fetch_and_decode(const std::vector<uint8_t>& instr_bytes)
+
+const std::unique_ptr<Instruction> CPU::fetch_and_decode()
 {
-    uint8_t opcode = instr_bytes[m_pc];
-    std::unique_ptr<Instruction> instr = InstructionFactory::make_instruction(opcode);
-    m_pc += instr->num_instr_bytes; 
+    uint8_t opcode = memory[m_pc];
+    std::unique_ptr<Instruction> instr = create_instruction(opcode);
+    m_pc += instr->get_num_bytes(); 
     return instr; 
 }
-
 
 void CPU::execute(const std::unique_ptr<Instruction>& instruction)
 {
     instruction->execute(*this);
-    Clock::wait_for_cycles(instruction->num_cycles);
+    Clock::wait_for_cycles(instruction->get_clock_cycles());
 }
-
-
-
-
 
 // Flags are the lower 4 bits of the F register
 
@@ -59,7 +54,7 @@ void CPU::set_carry(uint8_t bit)
 }
 
 
-uint8_t CPU::get_register8(Register8 reg)
+uint8_t CPU::get_register(Register8 reg)
 {
     switch (reg)
     {
@@ -82,7 +77,7 @@ uint8_t CPU::get_register8(Register8 reg)
     }
 }
 
-uint16_t CPU::get_register16(Register16 reg) 
+uint16_t CPU::get_register(Register16 reg) 
 { 
     uint8_t reg1, reg2; 
     switch (reg)
@@ -107,7 +102,7 @@ uint16_t CPU::get_register16(Register16 reg)
     return (reg1 << 8) | reg2; 
 }
 
-void CPU::set_register8(Register8 reg, uint8_t value)
+void CPU::set_register(Register8 reg, uint8_t value)
 {
     switch (reg)
     {
@@ -138,7 +133,7 @@ void CPU::set_register8(Register8 reg, uint8_t value)
     }
 }
 
-void CPU::set_register16(Register16 reg, uint16_t value)
+void CPU::set_register(Register16 reg, uint16_t value)
 {
     uint8_t reg1_value = value >> 8; 
     uint8_t reg2_value = value & 0xFF; 

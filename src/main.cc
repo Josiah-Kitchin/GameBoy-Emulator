@@ -1,6 +1,4 @@
 
-#include "instructions/instruction_factory.h"
-#include "instructions/instruction.h"
 #include "utils.h"
 #include "cpu.h"
 #include "clock.h"
@@ -17,9 +15,17 @@ void usage(int argc)
 
 int main(int argc, char** argv)
 {
-    usage(argc);
-    std::string program_name = argv[1];
-    std::vector<uint8_t> program = Utils::get_program_bytes(program_name); 
+    std::vector<uint8_t> program { 0x06, 7, 0x78 };
+    CPU cpu(program); 
+
+    for (int i = 0; i < 2; i++)
+    {
+        std::unique_ptr<Instruction> instr = cpu.fetch_and_decode();
+        cpu.execute(instr);
+    }
+
+    std::cout << int(cpu.get_register(Register8::B)) << std::endl;
 
     return 0; 
 }
+

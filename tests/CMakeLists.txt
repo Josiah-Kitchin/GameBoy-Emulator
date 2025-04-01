@@ -18,15 +18,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-add_executable(test_gameboy ${SOURCES} ${TEST_SOURCES})
+add_executable(test ${SOURCES} ${TEST_SOURCES})
 
-target_include_directories(test_gameboy PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+target_include_directories(test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 target_link_libraries(
-        test_gameboy PRIVATE 
+        test PRIVATE 
         gtest 
         gtest_main
     )
 
-target_compile_options(test_gameboy PRIVATE -Wall -Wextra -g)
+target_compile_options(test PRIVATE -Wall -Wextra -g)
 
