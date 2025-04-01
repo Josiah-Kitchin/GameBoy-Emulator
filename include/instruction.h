@@ -5,6 +5,8 @@
 class CPU;
 
 /// @brief Abstract class of instructions
+/// Naming Convention for derived classes: 
+///     The destination is the first operand, the src is the second 
 class Instruction
 {
   public:
@@ -32,42 +34,69 @@ class Instruction
 
 };
 
-/* --- Instructions --- */
+/* ---------- Other Instructions --------- */
+
 class NoOp : public Instruction
 {
     void execute(CPU& cpu) const override;
-    NoOp() : Instruction(1, 1) {}
+    NoOp() : Instruction(1, 4) {}
 };
+
+/* ---------- Load Instructions --------- */
 
 class LoadRR8 : public Instruction
 // Load 8 bit register from src to dst
 {
   public:
     void execute(CPU& cpu) const override;
-    LoadRR8(Register8 src, Register8 dst) : Instruction(1, 4), src(src), dst(dst) {}
+    LoadRR8(Register8 dst, Register8 src) : Instruction(1, 4), dst(dst), src(src) {}
 
   private:
-    Register8 src, dst;
+    Register8 dst, src;
 };
 
-class LoadVR8 : public Instruction
+class LoadR8V : public Instruction
 // Load 8 bit value into a register
 {
   public:
     void execute(CPU& cpu) const override;
-    LoadVR8(Register8 dst) : Instruction(2, 8), dst(dst) {}
+    LoadR8V(Register8 dst) : Instruction(2, 8), dst(dst) {}
 
   private:
     Register8 dst;
 };
 
-class LoadHLPointerR8 : public Instruction
+class LoadPointerR8 : public Instruction
+// Load the value in a register into memory pointed to by register HL 
+{
+  public:
+    void execute(CPU& cpu) const override;
+    LoadPointerR8(Register16 pointer, Register8 src) : Instruction(1, 8), pointer(pointer), src(src) {}
+
+  private: 
+    Register16 pointer;
+    Register8 src; 
+};
+
+class LoadR8Pointer : public Instruction
 // Load a byte pointed to in pointer register to a 8 bit register 
 {
   public:
     void execute(CPU& cpu) const override;
-    LoadHLPointerR8(Register8 dst) : Instruction(1, 4), dst(dst) {}
+    LoadR8Pointer(Register8 dst, Register16 pointer) : Instruction(1, 8), pointer(pointer), dst(dst) {}
 
   private: 
+    Register16 pointer; 
     Register8 dst; 
+};
+
+class LoadPointerV : public Instruction
+// Load a value into memory pointed to by register HL 
+{
+  public:
+    void execute(CPU& cpu) const override;
+    LoadPointerV(Register16 pointer) : Instruction(2, 12), pointer(pointer) {}
+
+  private: 
+    Register16 pointer; 
 };
