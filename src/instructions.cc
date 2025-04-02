@@ -61,3 +61,14 @@ void LoadPointerV::execute(CPU& cpu) const
 {
     cpu.bus.memory.write(cpu.get_register(pointer), n);
 }
+
+void LoadR8PointerV::execute(CPU& cpu) const
+{
+    uint8_t value = cpu.bus.memory.read(nn);
+    cpu.set_register(dst, value);
+}
+
+void LoadPointerVR8::execute(CPU& cpu) const
+{
+    cpu.bus.memory.write(nn, cpu.get_register(src));
+}

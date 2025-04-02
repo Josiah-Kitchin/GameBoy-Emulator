@@ -94,7 +94,7 @@ class LoadR8Pointer : public Instruction
 };
 
 class LoadPointerV : public Instruction
-// Load a value into memory pointed to by register HL 
+// Load a value into memory pointed to by value 
 {
   public:
     void execute(CPU& cpu) const override;
@@ -102,4 +102,28 @@ class LoadPointerV : public Instruction
 
   private: 
     Register16 pointer; 
+};
+
+
+class LoadR8PointerV : public Instruction
+{
+    // Load a value pointed by nn in to a register 
+  public: 
+    void execute(CPU& cpu) const override; 
+    LoadR8PointerV(Register8 dst) : Instruction(3, 16), dst(dst) {}
+
+  private: 
+    Register8 dst; 
+};
+
+class LoadPointerVR8 : public Instruction
+{
+    // Load a value in a register into memory pointed to by nn
+  public: 
+    void execute(CPU& cpu) const override; 
+    LoadPointerVR8(Register8 src) : Instruction(3, 16), src(src) {}
+
+  private:
+    Register8 src; 
+    
 };
