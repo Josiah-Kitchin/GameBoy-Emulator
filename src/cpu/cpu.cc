@@ -20,7 +20,7 @@ CPU::~CPU()
 const Instruction* CPU::fetch_and_decode()
 {
     uint8_t opcode = bus.memory.read(m_pc);
-    const Instruction* instr = create_instruction(opcode);
+    const Instruction* instr = fetch_instruction(opcode);
     m_pc += instr->get_num_bytes(); 
     return instr; 
 }

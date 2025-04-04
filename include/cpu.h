@@ -47,7 +47,7 @@ private:
     /// @brief Returns a pointer to an instruction based on the opcode 
     /// @param opcode Byte that decides what instruction to execute
     /// @return Pointer to the base instruction class, type of derived class varies on opcode  
-    const Instruction* create_instruction(uint8_t opcode); 
+    const Instruction* fetch_instruction(uint8_t opcode); 
 
     // registers
     uint8_t m_a = 0, m_b = 0, m_c = 0, m_d = 0, m_e = 0, m_f = 0, m_h = 0, m_l = 0; 

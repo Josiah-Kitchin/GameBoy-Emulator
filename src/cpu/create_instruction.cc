@@ -4,7 +4,7 @@
 #include <iostream> 
 
 
-const Instruction* CPU::create_instruction(uint8_t opcode)
+const Instruction* CPU::fetch_instruction(uint8_t opcode)
 {
     Instruction* instr = m_opcode_table[opcode];
     if (instr == nullptr)
@@ -16,6 +16,9 @@ const Instruction* CPU::create_instruction(uint8_t opcode)
     return instr; 
 }
 
+
+/// @brief The opcode table holds allocated instructions that 
+/// will call execute on the cpu. Instructions dealllocated in CPU deconstructor  
 void CPU::init_opcode_table() 
 {
     std::fill(m_opcode_table.begin(), m_opcode_table.end(), nullptr); 
