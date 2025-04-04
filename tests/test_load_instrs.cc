@@ -14,7 +14,7 @@ TEST(LoadInstr, LoadRR8)
     CPU cpu(bus);
 
     cpu.set_register(Register8::B, 8);
-    std::unique_ptr<Instruction> instr = cpu.fetch_and_decode(); 
+    const Instruction* instr = cpu.fetch_and_decode(); 
 
     cpu.execute(instr);
     ASSERT_EQ(cpu.get_register(Register8::A), 8);
@@ -28,7 +28,7 @@ TEST(LoadInstr, LoadR8V)
     bus.memory.load(program);
     CPU cpu(bus);
 
-    std::unique_ptr<Instruction> instr = cpu.fetch_and_decode(); 
+    const Instruction* instr = cpu.fetch_and_decode(); 
     cpu.execute(instr);
     ASSERT_EQ(cpu.get_register(Register8::B), 8);
 }
@@ -42,7 +42,7 @@ TEST(LoadInstr, LoadR8Pointer)
     CPU cpu(bus);
     cpu.set_register(Register16::HL, 1);
 
-    std::unique_ptr<Instruction> instr = cpu.fetch_and_decode(); 
+    const Instruction* instr = cpu.fetch_and_decode(); 
     cpu.execute(instr);
     ASSERT_EQ(cpu.get_register(Register8::A), 3);
 }
@@ -57,7 +57,21 @@ TEST(LoadInstr, LoadPointerR8)
     cpu.set_register(Register8::B, 7);
     cpu.set_register(Register16::HL, 1);
 
-    std::unique_ptr<Instruction> instr = cpu.fetch_and_decode(); 
+    const Instruction* instr = cpu.fetch_and_decode(); 
     cpu.execute(instr);
     ASSERT_EQ(bus.memory.read(1), 7);
+}
+
+TEST(LoadInstr, LoadPointerVR8)
+{
+    // Test loading a value from a register into memory pointed to by nn
+    Bus bus; 
+    std::vector<uint8_t> program { 0xEA, 0x01, 0x00 };
+    bus.memory.load(program);
+    CPU cpu(bus); 
+    cpu.set_register(Register8::A, 3);
+
+    const Instruction* instr = cpu.fetch_and_decode(); 
+    cpu.execute(instr);
+    ASSERT_EQ(bus.memory.read(1), 3);
 }

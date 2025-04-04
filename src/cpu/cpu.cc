@@ -5,16 +5,27 @@
 #include "clock.h"
 #include <cassert> 
 
+CPU::CPU(Bus& bus) : bus(bus)
+{
+    init_opcode_table(); 
+}
 
-const std::unique_ptr<Instruction> CPU::fetch_and_decode()
+CPU::~CPU()
+{
+    for (Instruction* instr : m_opcode_table)
+        delete instr; 
+}
+    
+
+const Instruction* CPU::fetch_and_decode()
 {
     uint8_t opcode = bus.memory.read(m_pc);
-    std::unique_ptr<Instruction> instr = create_instruction(opcode);
+    const Instruction* instr = create_instruction(opcode);
     m_pc += instr->get_num_bytes(); 
     return instr; 
 }
 
-void CPU::execute(const std::unique_ptr<Instruction>& instruction)
+void CPU::execute(const Instruction* instruction)
 {
     instruction->execute(*this);
     Clock::wait_for_cycles(instruction->get_clock_cycles());

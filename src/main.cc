@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 
     for (int i = 0; i < 2; i++)
     {
-        std::unique_ptr<Instruction> instr = cpu.fetch_and_decode();
+        const Instruction* instr = cpu.fetch_and_decode();
         cpu.execute(instr);
     }
 
